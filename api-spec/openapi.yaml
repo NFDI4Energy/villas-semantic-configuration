@@ -15,7 +15,7 @@ externalDocs:
   description: VILLAS Node configuration
   url: https://some/villas/uri
 servers:
-  - url: http://localhost:7373
+  - url: http://localhost:8080
 tags:
   - name: semantics
     description: Semantic Web Related Topic

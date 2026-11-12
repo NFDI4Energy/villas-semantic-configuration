@@ -214,7 +214,7 @@ properties:
 
       periodic_signaling:
         type: integer
-        default: <out.max_wrs / 2>
+        # default: <out.max_wrs / 2>
         description: |
           If a sample is sent inline, no Completion Queue Entry (CQE) is generated.
           However, once a while, a CQE must be generated to prevent the Send Queue from overflowing.

@@ -61,6 +61,7 @@ properties:
     enum:
     - zero
     - signal_repeat
+    - none
     default: none
     description: The padding type.
 
@@ -68,6 +69,7 @@ properties:
     type: string
     enum:
     - quadratic
+    - none
     default: none
     description: The frequency estimation type.
 

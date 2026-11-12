@@ -12,7 +12,7 @@ properties:
 
   queuelen:
     type: integer
-    default: <DEFAULT_SHMEM_QUEUELEN>
+    # default: <DEFAULT_SHMEM_QUEUELEN>
     description: Length of the input and output queues in elements.
 
   mode:

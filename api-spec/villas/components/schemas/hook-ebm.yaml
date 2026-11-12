@@ -24,10 +24,11 @@ properties:
       - [4, 5]
       additionalItems: false
       items:
-      - title: Voltage Signal Index
         type: integer
-      - title: Current Signal Index
-        type: integer
+#      - title: Voltage Signal Index
+#        type: integer
+#      - title: Current Signal Index
+#        type: integer
 
   priority:
     default: 99
