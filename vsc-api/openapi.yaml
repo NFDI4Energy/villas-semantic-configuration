@@ -1,0 +1,708 @@
+openapi: 3.1.0
+info:
+  contact:
+    email: philipp.schmurr@kit.edu
+  description: |-
+    This is a minimalistic API to convert JSON based VILLAS node configuration files to it RDF counterpart.
+    It uses the OpenAPI 3.1 specification.
+  license:
+    name: MIT
+  termsOfService: http://swagger.io/terms/
+  title: VILLAS Semantic Conf API - OpenAPI 3.1
+  version: 0.1.0
+externalDocs:
+  description: VILLAS Node configuration
+  url: https://some/villas/uri
+servers:
+- url: http://localhost:8080
+tags:
+- description: Semantic Web Related Topic
+  externalDocs:
+    description: RDF Spec
+    url: https://rdf.spec
+  name: semantics
+paths:
+  /semantify-file:
+    post:
+      description: |-
+        This endpoint takes an octet-stream and attempts to parse JSON from it and then attempts the conversion to RDF.
+        The result is an octet-stream that includes the RDF version.
+        Serialization format can be decided via query parameters.
+      operationId: semantify_file
+      parameters:
+      - $ref: "#/components/parameters/output-mime-type"
+      requestBody:
+        content:
+          application/octet-stream:
+            schema:
+              format: binary
+              type: string
+        description: The binary string containing the JSON file
+        required: true
+      responses:
+        "200":
+          content:
+            application/octet-stream:
+              schema:
+                format: binary
+                type: string
+          description: successful operation
+        "400":
+          content:
+            text/plain:
+              schema:
+                type: string
+          description: invalid JSON configuration input file
+      summary: Convert JSON configuration file to semantic counterpart in RDF
+      tags:
+      - semantics
+  /semantify-json:
+    post:
+      description: |-
+        This endpoint takes the VILLAS configuration as a JSON string.
+        It performs schema validation against the official VILLAS node configuration schema.
+        Different RDF serializations can be picked using the Accept Header.
+      operationId: semantify_json
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VillasConfig"
+        description: JSON string that conforms to VILLAS node configuration
+        required: true
+      responses:
+        "200":
+          content:
+            text/turtle:
+              schema:
+                type: string
+          description: successful operation
+        "400":
+          content:
+            text/plain:
+              schema:
+                type: string
+          description: Invalid JSON configuration input
+      summary: Insert a new data source meta record
+      tags:
+      - semantics
+  /jsonld-context:
+    get:
+      description: This endpoint provides the JSON LD context needed when working
+        with the JSON LD output of this API.
+      operationId: jsonld_context
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: successful operation
+      summary: Get the jsonld context to be used with the jsonld version from this
+        API
+      tags:
+      - semantics
+components:
+  parameters:
+    output-mime-type:
+      explode: true
+      in: query
+      name: output-mime-type
+      required: false
+      schema:
+        default: text/turtle
+        type: string
+      style: form
+  schemas:
+    VillasConfig:
+      additionalProperties: {}
+      description: Schema of the VILLASnode configuration file.
+      example:
+        ethercat:
+          master: 0
+          alias: 6
+          coupler:
+            position: 1
+            product_code: 5
+            vendor_id: 5
+        fpgas:
+          key:
+            interface: pcie
+            name: name
+            ips: ips
+            affinity: 2
+            do_reset: true
+            slot: slot
+            id: id
+            polling: true
+            paths:
+            - from: from
+              to: to
+              reverse: true
+            - from: from
+              to: to
+              reverse: true
+            ignore_ips:
+            - ignore_ips
+            - ignore_ips
+        nodes:
+          key: {}
+        paths:
+        - in: Path_list_inner_in
+          out: Path_list_inner_out
+          enabled: true
+          mode: any
+          mask:
+          - mask
+          - mask
+          rate: 0.7061401241503109
+          original_sequence_no: false
+          hooks:
+          - print
+          - type: limit_rate
+            rate: 1000
+          uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          affinity: 9
+          poll: true
+          builtin: true
+          queuelen: 3
+        - in: Path_list_inner_in
+          out: Path_list_inner_out
+          enabled: true
+          mode: any
+          mask:
+          - mask
+          - mask
+          rate: 0.7061401241503109
+          original_sequence_no: false
+          hooks:
+          - print
+          - type: limit_rate
+            rate: 1000
+          uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          affinity: 9
+          poll: true
+          builtin: true
+          queuelen: 3
+        http:
+          enabled: true
+          port: 2
+          ssl_cert: /etc/ssl/certs/mycert.pem
+          ssl_private_key: /etc/ssl/private/mykey.pem
+        logging:
+          level: info
+          file: file
+          syslog: false
+          expressions:
+          - name: name
+            level: trace
+          - name: name
+            level: trace
+        hugepages: 4
+        stats: 7.386281948385884
+        affinity: 1
+        priority: 1
+        idle_stop: false
+        uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        seed: 1
+      properties:
+        ethercat:
+          $ref: "#/components/schemas/VillasConfig_ethercat"
+        fpgas:
+          additionalProperties:
+            $ref: "#/components/schemas/VillasConfig_fpgas_value"
+          description: Global FPGA configuration
+          title: fpgas
+          type: object
+        nodes:
+          additionalProperties:
+            discriminator:
+              mapping:
+                amqp: ./node-amqp.yaml
+                c37.118: ./node-c37_118.yaml
+                can: ./node-can.yaml
+                comedi: ./node-comedi.yaml
+                ethercat: ./node-ethercat.yaml
+                example: ./node-example.yaml
+                exec: ./node-exec.yaml
+                file: ./node-file.yaml
+                fpga: ./node-fpga.yaml
+                iec60870-5-104: ./node-iec60870-5-104.yaml
+                iec61850-8-1: ./node-iec61850-8-1.yaml
+                iec61850-9-2: ./node-iec61850-9-2.yaml
+                infiniband: ./node-infiniband.yaml
+                influxdb: ./node-influxdb.yaml
+                kafka: ./node-kafka.yaml
+                loopback: ./node-loopback.yaml
+                modbus: ./node-modbus.yaml
+                mqtt: ./node-mqtt.yaml
+                nanomsg: ./node-nanomsg.yaml
+                ngsi: ./node-ngsi.yaml
+                opal.async: ./node-opal_async.yaml
+                opal.orchestra: ./node-opal_orchestra.yaml
+                opendss: ./node-opendss.yaml
+                redis: ./node-redis.yaml
+                rtp: ./node-rtp.yaml
+                shmem: ./node-shmem.yaml
+                signal: ./node-signal.yaml
+                signal.v2: ./node-signal_v2.yaml
+                socket: ./node-socket.yaml
+                stats: ./node-stats.yaml
+                temper: ./node-temper.yaml
+                test_rtt: ./node-test_rtt.yaml
+                uldaq: ./node-uldaq.yaml
+                webrtc: ./node-webrtc.yaml
+                websocket: ./node-websocket.yaml
+                zeromq: ./node-zeromq.yaml
+              propertyName: type
+            type: object
+            x-additionalPropertiesName: Node Name
+          description: |
+            A mapping from unique identifiers to node configurations.
+          title: Node Objects
+          type: object
+        paths:
+          default: []
+          description: |
+            A list of uni-directional paths which connect the nodes defined in the `nodes` list.
+          items:
+            $ref: "#/components/schemas/Path_list_inner"
+          title: Path list
+          type: array
+        http:
+          $ref: "#/components/schemas/VillasConfig_http"
+        logging:
+          $ref: "#/components/schemas/Logging_configuration"
+        hugepages:
+          default: 100
+          description: |
+            The number of hugepages which will be reservered by the system.
+
+            See: https://www.kernel.org/doc/Documentation/vm/hugetlbpage.txt
+
+            A value of zero will disable the use of huge pages.
+          title: Number of reserved hugepages
+          type: integer
+        stats:
+          default: 1.0
+          description: |
+            Specifies the rate at which statistics about the active paths will be periodically printed to the screen.
+
+            Setting this value to 5, will print 5 lines per second.
+
+            A line includes information such as:
+
+            - Source and Destination of path
+            - Messages received
+            - Messages sent
+            - Messages dropped
+          title: Statistics interval
+          type: number
+        affinity:
+          default: 0
+          description: |
+            Restricts the exeuction of the daemon to certain CPU cores.
+            This technique, also called 'pinning', improves the determinism of the server by isolating the daemon processes on exclusive cores.
+
+            A value of `0` will not change the affinity of the process.
+          title: Task/Process affinity mask
+          type: integer
+        priority:
+          default: 0
+          description: |
+            Adjusts the scheduling priority of the deamon processes.
+            By default, the daemon uses a real-time optimized FIFO scheduling algorithm.
+
+            A value of `0` will not change the priority of the process.
+          title: priority
+          type: integer
+        idle_stop:
+          default: false
+          title: idle_stop
+          type: boolean
+        uuid:
+          description: |
+            Each VILLASnode instance is identified by a globally unique indentifier / UUID.
+
+            This UUID can be queried by the API.
+
+            If the setting is not provided, a UUID will be generated by hashing the active VILLASnode configuration.
+            This ensures that restarting the VILLASnode instance with the identical configuration will yield always the same UUID.
+          format: uuid
+          nullable: true
+          title: Super-node UUID
+          type: string
+        seed:
+          default: 0
+          description: |
+            The seed for the random number generator used by the VILLASnode instance.
+          title: Random number generator seed
+          type: integer
+      title: VILLASnode configuration file
+    VillasConfig_ethercat_coupler:
+      additionalProperties: false
+      example:
+        position: 1
+        product_code: 5
+        vendor_id: 5
+      properties:
+        position:
+          title: position
+          type: integer
+        product_code:
+          title: product_code
+          type: integer
+        vendor_id:
+          title: vendor_id
+          type: integer
+      title: VillasConfig_ethercat_coupler
+    VillasConfig_ethercat:
+      additionalProperties: false
+      description: Global EtherCAT master configuration
+      example:
+        master: 0
+        alias: 6
+        coupler:
+          position: 1
+          product_code: 5
+          vendor_id: 5
+      properties:
+        master:
+          title: master
+          type: integer
+        alias:
+          title: master
+          type: integer
+        coupler:
+          $ref: "#/components/schemas/VillasConfig_ethercat_coupler"
+      title: VillasConfig_ethercat
+    VillasConfig_fpgas_value_allOf_paths_inner:
+      additionalProperties: false
+      example:
+        from: from
+        to: to
+        reverse: true
+      properties:
+        from:
+          title: from
+          type: string
+        to:
+          title: to
+          type: string
+        reverse:
+          title: reverse
+          type: boolean
+      required:
+      - from
+      - to
+      title: VillasConfig_fpgas_value_allOf_paths_inner
+    VillasConfig_fpgas_value:
+      allOf:
+      - additionalProperties: false
+        description: FPGA Card configuration
+        properties:
+          interface:
+            enum:
+            - pcie
+            - platform
+            type: string
+          name:
+            type: string
+          ips:
+            type: string
+          affinity:
+            type: integer
+          do_reset:
+            type: boolean
+          slot:
+            type: string
+          id:
+            type: string
+          polling:
+            type: boolean
+          paths:
+            items:
+              $ref: "#/components/schemas/VillasConfig_fpgas_value_allOf_paths_inner"
+            type: array
+            default: null
+          ignore_ips:
+            items:
+              type: string
+            type: array
+            default: null
+        required:
+        - interface
+      example:
+        interface: pcie
+        name: name
+        ips: ips
+        affinity: 2
+        do_reset: true
+        slot: slot
+        id: id
+        polling: true
+        paths:
+        - from: from
+          to: to
+          reverse: true
+        - from: from
+          to: to
+          reverse: true
+        ignore_ips:
+        - ignore_ips
+        - ignore_ips
+      title: VillasConfig_fpgas_value
+    Path_list_inner_in:
+      description: |
+        The in settings expects the name of one or more source nodes or mapping expressions.
+      oneOf:
+      - type: string
+      - items:
+          type: string
+        type: array
+        default: null
+      title: Path_list_inner_in
+    Path_list_inner_out:
+      description: |
+        The out setting expects the name of one or more destination nodes. Each sample which is processed by the path will be sent to each of the destination nodes.
+      oneOf:
+      - type: string
+      - items:
+          type: string
+        type: array
+        default: null
+      title: Path_list_inner_out
+    Path_list_inner:
+      additionalProperties: false
+      example:
+        in: Path_list_inner_in
+        out: Path_list_inner_out
+        enabled: true
+        mode: any
+        mask:
+        - mask
+        - mask
+        rate: 0.7061401241503109
+        original_sequence_no: false
+        hooks:
+        - print
+        - type: limit_rate
+          rate: 1000
+        uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        affinity: 9
+        poll: true
+        builtin: true
+        queuelen: 3
+      properties:
+        in:
+          $ref: "#/components/schemas/Path_list_inner_in"
+        out:
+          $ref: "#/components/schemas/Path_list_inner_out"
+        enabled:
+          default: true
+          description: |
+            Whether this path is enabled.
+            A disabled path is loaded from the configuration but not started.
+          title: enabled
+          type: boolean
+        mode:
+          default: any
+          description: |
+            The mode setting specifies under which condition a path is triggered.
+            A triggered path will multiplex / merge samples from its input nodes and run the configured hook functions on them.
+            Afterwards the processed and merged samples will be send to all output nodes.
+
+            Two modes are currently supported:
+
+            - `any`: The path will trigger the path as soon as any of the masked (see `mask`) input nodes received new samples.
+            - `all`: The path will trigger the path as soon as all input nodes received at least one new sample.
+          enum:
+          - any
+          - all
+          title: mode
+          type: string
+        mask:
+          description: |
+            This setting allows masking the input nodes which can trigger the path.
+
+            See also `mode` setting.
+          items:
+            description: A node-name
+            type: string
+          title: mask
+          type: array
+          default: null
+        rate:
+          default: 0
+          description: |
+            A non-zero value will periodically trigger the path and resend the last sample again.
+
+            A value of zero will disable this feature.
+          minimum: 0
+          title: rate
+          type: number
+        original_sequence_no:
+          default: false
+          description: |
+            When this flag is set, the original sequence number from the source node will be used when multiplexing the nodes.
+          title: original_sequence_no
+          type: boolean
+        hooks:
+          example:
+          - print
+          - type: limit_rate
+            rate: 1000
+          items:
+            description: |
+              Hooks form a pipeline of steps which process, filter or alter sample data.
+            type: string
+          title: Hook List
+          type: array
+          default: null
+        uuid:
+          description: |
+            A globally unique ID which identifies the path for the use via the API.
+          format: uuid
+          title: uuid
+          type: string
+        affinity:
+          description: |
+            A mask which pins the execution of this path to a set of CPU cores.
+          title: affinity
+          type: integer
+        poll:
+          description: |
+            A boolean flag which enables the poll-based mode for reading samples from multiple path sources.
+
+            **Note:** This is an advanced setting.
+            Most users should use the default value which will always do the right thing based on the number and type of input nodes for this path.
+          title: poll
+          type: boolean
+        builtin:
+          default: true
+          description: |
+            If enabled, the path will start with a set of default and builtin hook functions.
+          title: builtin
+          type: boolean
+        queuelen:
+          description: |
+            The length of the path queue. It limits how many samples can be _in flight_ at any point in time.
+            If you see queue or pool underrun warnings, try to increase this value.
+          title: queuelen
+          type: integer
+      required:
+      - in
+      title: Path_list_inner
+    VillasConfig_http:
+      additionalProperties: false
+      example:
+        enabled: true
+        port: 2
+        ssl_cert: /etc/ssl/certs/mycert.pem
+        ssl_private_key: /etc/ssl/private/mykey.pem
+      properties:
+        enabled:
+          default: true
+          description: |
+            When set to `false`, the built-in HTTP & WebSocket server is disabled and will not listen on any port.
+          title: Enable HTTP/WebSocket server
+          type: boolean
+        port:
+          default: 8080
+          description: |
+            The TCP port number on which the HTTP & WebSocket server listens.
+            Defaults to 80 when running as root, otherwise 8080.
+          title: Listening port
+          type: integer
+        ssl_cert:
+          description: |
+            The public x509 certificate used for server-side SSL encryption.
+          example: /etc/ssl/certs/mycert.pem
+          title: SSL Certificate Path
+          type: string
+        ssl_private_key:
+          description: |
+            The private x509 key used for server-side SSL encryption.
+          example: /etc/ssl/private/mykey.pem
+          title: SSL Private Key Path
+          type: string
+      title: VillasConfig_http
+    Logging_expressions_inner:
+      additionalProperties: false
+      example:
+        name: name
+        level: trace
+      properties:
+        name:
+          description: "The [glob](https://man7.org/linux/man-pages/man7/glob.7.html)-style\
+            \ pattern to match the names of the loggers for which the level should\
+            \ be adjusted."
+          title: Logger name filter
+          type: string
+        level:
+          description: |
+            The level which should be used for the matched loggers.
+          enum:
+          - trace
+          - debug
+          - info
+          - warning
+          - error
+          - critical
+          - "off"
+          title: Log level
+          type: string
+      required:
+      - level
+      - name
+      title: Logging_expressions_inner
+    Logging_configuration:
+      additionalProperties: false
+      example:
+        level: info
+        file: file
+        syslog: false
+        expressions:
+        - name: name
+          level: trace
+        - name: name
+          level: trace
+      properties:
+        level:
+          default: info
+          description: |
+            This setting expects one of the allowed strings to adjust the logging level.
+            Use this with care! Producing a lot of IO by enabling the debug output might decrease the performance of the server.
+          enum:
+          - trace
+          - debug
+          - info
+          - warning
+          - error
+          - critical
+          - "off"
+          title: The log level
+          type: string
+        file:
+          description: |
+            Write all log messages to a file.
+          title: Log file name
+          type: string
+        syslog:
+          default: false
+          description: |
+            If enabled VILLASnode will log to the [system log](https://en.wikipedia.org/wiki/Syslog).
+          title: Enable syslog logging
+          type: boolean
+        expressions:
+          description: |
+            The logging expression allow for a fine grained control of log levels per individual logger instance.
+            Expressions are provided as a list of logger name pattern and the desired level.
+
+            **Note:** The expressions are evaluated in the order of their appearance in the list.
+          items:
+            $ref: "#/components/schemas/Logging_expressions_inner"
+          title: Logging expressions
+          type: array
+          default: null
+      title: Logging configuration
