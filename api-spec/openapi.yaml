@@ -1,0 +1,122 @@
+openapi: 3.1.0
+info:
+  title: VILLAS Semantic Conf API - OpenAPI 3.1
+  description: |-
+    This is a minimalistic API to convert JSON based VILLAS node configuration files to it RDF counterpart.
+    It uses the OpenAPI 3.1 specification.
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: philipp.schmurr@kit.edu
+  license:
+    name: MIT
+    identifier: MIT
+  version: 0.1.0
+externalDocs:
+  description: VILLAS Node configuration
+  url: https://some/villas/uri
+servers:
+  - url: http://localhost:7373
+tags:
+  - name: semantics
+    description: Semantic Web Related Topic
+    externalDocs:
+      description: RDF Spec
+      url: https://rdf.spec
+paths:
+  /semantify-file:
+    post:
+      tags:
+        - semantics
+
+      summary: Convert JSON configuration file to semantic counterpart in RDF
+      description: |-
+        This endpoint takes an octet-stream and attempts to parse JSON from it and then attempts the conversion to RDF.
+        The result is an octet-stream that includes the RDF version.
+        Serialization format can be decided via query parameters.
+      operationId: semantify_file
+      parameters:
+        - $ref: '#/components/parameters/output-mime-type'
+      requestBody:
+        description: The binary string containing the JSON file
+        required: true
+        content:
+          application/octet-stream:
+            schema:
+              type: string
+              format: binary
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        '400':
+          description: invalid JSON configuration input file
+          content:
+            text/plain:
+              schema:
+                type: string
+  /semantify-json:
+    post:
+      tags:
+        - semantics
+      summary: Insert a new data source meta record
+      description: |-
+        This endpoint takes the VILLAS configuration as a JSON string.
+        It performs schema validation against the official VILLAS node configuration schema.
+        Different RDF serializations can be picked using the Accept Header.
+      operationId: semantify_json
+      requestBody:
+        description: JSON string that conforms to VILLAS node configuration
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VillasConfig'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            text/turtle:
+              schema:
+                type: string
+        '400':
+          description: Invalid JSON configuration input
+          content:
+            text/plain:
+              schema:
+                type: string
+  
+  /jsonld-context:
+    get:
+      tags:
+        - semantics
+      summary: Get the jsonld context to be used with the jsonld version from this API
+      description: |-
+        This endpoint provides the JSON LD context needed when working with the JSON LD output of this API.
+      operationId: jsonld_context
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+  
+components:
+  parameters:
+    output-mime-type:
+      name: output-mime-type
+      in: query
+      schema:
+        type: string
+        default: "text/turtle"
+      required: false
+      
+   
+  schemas:
+    VillasConfig:
+      # $ref: "https://villas.fein-aachen.org/redocusaurus/node.yaml#/components/schemas/config"
+      $ref: "./villas/components/schemas/config.yaml"
