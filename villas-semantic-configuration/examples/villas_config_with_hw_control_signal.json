@@ -1,0 +1,192 @@
+{
+  "nodes": {
+    "rtds-1": {
+      "type": "socket",
+      "layer": "udp",
+      "format": {
+        "type": "gtnet",
+        "ts_origin": false,
+        "ts_received": false,
+        "offset": false,
+        "sequence": false
+      },
+      "in": {
+        "address": "172.21.63.224:12083",
+        "hooks": [
+          {
+            "type": "stats"
+          }
+        ]
+      },
+      "out": {
+        "address": "172.21.63.203:12083"
+      }
+    },
+    "building-fmu": {
+      "type": "socket",
+      "layer": "udp",
+      "format": {
+        "type": "gtnet",
+        "ts_origin": false,
+        "ts_received": false,
+        "offset": false,
+        "sequence": false
+      },
+      "in": {
+        "address": "172.21.63.224:8878",
+        "signals": "4f"
+      },
+      "out": {
+        "address": "127.0.0.1:12000"
+      }
+    },
+    "pv-database": {
+      "type": "socket",
+      "builtin": false,
+      "layer": "udp",
+      "format": {
+        "type": "gtnet",
+        "ts_origin": false,
+        "ts_received": false,
+        "offset": false,
+        "sequence": false
+      },
+      "in": {
+        "address": "172.21.63.224:8898",
+        "signals": "2f"
+      },
+      "out": {
+        "address": "127.0.0.1:12002"
+      }
+    },
+    "hardware-setpoints": {
+      "type": "socket",
+      "layer": "udp",
+      "format": {
+        "type": "gtnet",
+        "data": true,
+        "offset": false,
+        "sequence": false,
+        "ts_origin": false,
+        "ts_received": false
+      },
+      "in": {
+        "address": "172.21.63.224:8888",
+        "signals": "2f",
+        "hooks": [
+          {
+            "type": "stats"
+          }
+        ]
+      },
+      "out": {
+        "address": "127.0.0.1:0"
+      }
+    },
+    "switch-signal": {
+      "type": "socket",
+      "layer": "udp",
+      "format": {
+        "type": "gtnet",
+        "data": true,
+        "offset": false,
+        "sequence": false,
+        "ts_origin": false,
+        "ts_received": false
+      },
+      "in": {
+        "address": "172.21.63.224:8889",
+        "signals": "1f",
+        "hooks": [
+          {
+            "type": "stats"
+          }
+        ]
+      },
+      "out": {
+        "address": "127.0.0.1:0"
+      }
+    },
+    "fixed-p": {
+      "type": "signal",
+      "signal": "constant",
+      "values": 1,
+      "offset": 10000.0
+    },
+    "fixed-q": {
+      "type": "signal",
+      "signal": "constant",
+      "values": 1,
+      "offset": 0.0
+    },
+    "hardware-receiver": {
+      "type": "socket",
+      "layer": "udp",
+      "format": "villas.binary",
+      "in": {
+        "address": "172.21.63.224:12084"
+      },
+      "out": {
+        "address": "172.21.63.222:12201",
+        "signals": "2f"
+      }
+    },
+    "hardware-sender": {
+      "type": "socket",
+      "layer": "udp",
+      "format": {
+        "type": "gtnet",
+        "ts_origin": false,
+        "ts_received": false,
+        "offset": false,
+        "sequence": false
+      },
+      "in": {
+        "address": "172.21.63.224:12085",
+        "signals": "9f",
+        "hooks": [
+          {
+            "type": "stats"
+          }
+        ]
+      },
+      "out": {
+        "address": "172.21.63.254:1338"
+      }
+    }
+  },
+  "paths": [
+    {
+      "in": [
+        "hardware-sender",
+        "building-fmu"
+      ],
+      "out": [
+        "rtds-1"
+      ]
+    },
+    {
+      "in": [
+        "hardware-setpoints",
+        "fixed-p",
+        "fixed-q",
+        "switch-signal"
+      ],
+      "out": [
+        "hardware-receiver"
+      ],
+      "hooks": [
+        {
+          "type": "lua",
+          "script": "switch.lua",
+          "use_names": false
+        },
+        {
+          "type": "print",
+          "output": "hardware-switch.log",
+          "format": "villas.human"
+        }
+      ]
+    }
+  ]
+}

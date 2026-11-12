@@ -1,0 +1,225 @@
+PREFIX ns1: <rdfs:>
+PREFIX oeo: <http://openenergyplatform.org/ontology/oeo/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX vil: <http://villas.fein-aachen.org/ontology/>
+
+<http://example.org/components/building-fmu>
+    a oeo:OEO_00420006 ;
+    oeo:OEO_0042XXXX-has_connection_port
+        [
+            a oeo:OEO_0042XXXX-simulation_connection_input_port ;
+            oeo:OEO_0042XXXX-has_message_schema
+                [
+                    a oeo:OEO_0042XXXX-message_schema ;
+                    oeo:OEO_0042XXXX-has_message_attribute (
+                        
+                        [
+                            a oeo:OEO_0042XXXX-message_attribute ;
+                            vil:field_type "float"^^<xsd:string> ;
+                            ns1:label "float_0"^^<xsd:string> ;
+                        ]
+                        
+                        [
+                            a oeo:OEO_0042XXXX-message_attribute ;
+                            vil:field_type "float"^^<xsd:string> ;
+                            ns1:label "float_1"^^<xsd:string> ;
+                        ]
+                        
+                        [
+                            a oeo:OEO_0042XXXX-message_attribute ;
+                            vil:field_type "float"^^<xsd:string> ;
+                            ns1:label "float_2"^^<xsd:string> ;
+                        ]
+                        
+                        [
+                            a oeo:OEO_0042XXXX-message_attribute ;
+                            vil:field_type "float"^^<xsd:string> ;
+                            ns1:label "float_3"^^<xsd:string> ;
+                        ]
+                    ) ;
+                ] ;
+        ] ;
+.
+
+<http://example.org/components/fixed-p>
+    a oeo:OEO_00420006 ;
+.
+
+<http://example.org/components/fixed-q>
+    a oeo:OEO_00420006 ;
+.
+
+<http://example.org/components/hardware-receiver>
+    a oeo:OEO_00420006 ;
+    oeo:OEO_0042XXXX-has_connection_port
+        [
+            a oeo:OEO_0042XXXX-simulation_connection_input_port ;
+        ] ;
+.
+
+<http://example.org/components/hardware-sender>
+    a oeo:OEO_00420006 ;
+    oeo:OEO_0042XXXX-has_connection_port
+        [
+            a oeo:OEO_0042XXXX-simulation_connection_input_port ;
+            oeo:OEO_0042XXXX-has_message_schema
+                [
+                    a oeo:OEO_0042XXXX-message_schema ;
+                    oeo:OEO_0042XXXX-has_message_attribute (
+                        
+                        [
+                            a oeo:OEO_0042XXXX-message_attribute ;
+                            vil:field_type "float"^^<xsd:string> ;
+                            ns1:label "float_0"^^<xsd:string> ;
+                        ]
+                        
+                        [
+                            a oeo:OEO_0042XXXX-message_attribute ;
+                            vil:field_type "float"^^<xsd:string> ;
+                            ns1:label "float_1"^^<xsd:string> ;
+                        ]
+                        
+                        [
+                            a oeo:OEO_0042XXXX-message_attribute ;
+                            vil:field_type "float"^^<xsd:string> ;
+                            ns1:label "float_2"^^<xsd:string> ;
+                        ]
+                        
+                        [
+                            a oeo:OEO_0042XXXX-message_attribute ;
+                            vil:field_type "float"^^<xsd:string> ;
+                            ns1:label "float_3"^^<xsd:string> ;
+                        ]
+                        
+                        [
+                            a oeo:OEO_0042XXXX-message_attribute ;
+                            vil:field_type "float"^^<xsd:string> ;
+                            ns1:label "float_4"^^<xsd:string> ;
+                        ]
+                        
+                        [
+                            a oeo:OEO_0042XXXX-message_attribute ;
+                            vil:field_type "float"^^<xsd:string> ;
+                            ns1:label "float_5"^^<xsd:string> ;
+                        ]
+                        
+                        [
+                            a oeo:OEO_0042XXXX-message_attribute ;
+                            vil:field_type "float"^^<xsd:string> ;
+                            ns1:label "float_6"^^<xsd:string> ;
+                        ]
+                        
+                        [
+                            a oeo:OEO_0042XXXX-message_attribute ;
+                            vil:field_type "float"^^<xsd:string> ;
+                            ns1:label "float_7"^^<xsd:string> ;
+                        ]
+                        
+                        [
+                            a oeo:OEO_0042XXXX-message_attribute ;
+                            vil:field_type "float"^^<xsd:string> ;
+                            ns1:label "float_8"^^<xsd:string> ;
+                        ]
+                    ) ;
+                ] ;
+        ] ;
+.
+
+<http://example.org/components/hardware-setpoints>
+    a oeo:OEO_00420006 ;
+    oeo:OEO_0042XXXX-has_connection_port
+        [
+            a oeo:OEO_0042XXXX-simulation_connection_input_port ;
+            oeo:OEO_0042XXXX-has_message_schema
+                [
+                    a oeo:OEO_0042XXXX-message_schema ;
+                    oeo:OEO_0042XXXX-has_message_attribute (
+                        
+                        [
+                            a oeo:OEO_0042XXXX-message_attribute ;
+                            vil:field_type "float"^^<xsd:string> ;
+                            ns1:label "float_0"^^<xsd:string> ;
+                        ]
+                        
+                        [
+                            a oeo:OEO_0042XXXX-message_attribute ;
+                            vil:field_type "float"^^<xsd:string> ;
+                            ns1:label "float_1"^^<xsd:string> ;
+                        ]
+                    ) ;
+                ] ;
+        ] ;
+.
+
+<http://example.org/components/pv-database>
+    a oeo:OEO_00420006 ;
+    oeo:OEO_0042XXXX-has_connection_port
+        [
+            a oeo:OEO_0042XXXX-simulation_connection_input_port ;
+            oeo:OEO_0042XXXX-has_message_schema
+                [
+                    a oeo:OEO_0042XXXX-message_schema ;
+                    oeo:OEO_0042XXXX-has_message_attribute (
+                        
+                        [
+                            a oeo:OEO_0042XXXX-message_attribute ;
+                            vil:field_type "float"^^<xsd:string> ;
+                            ns1:label "float_0"^^<xsd:string> ;
+                        ]
+                        
+                        [
+                            a oeo:OEO_0042XXXX-message_attribute ;
+                            vil:field_type "float"^^<xsd:string> ;
+                            ns1:label "float_1"^^<xsd:string> ;
+                        ]
+                    ) ;
+                ] ;
+        ] ;
+.
+
+<http://example.org/components/rtds-1>
+    a oeo:OEO_00420006 ;
+    oeo:OEO_0042XXXX-has_connection_port
+        [
+            a oeo:OEO_0042XXXX-simulation_connection_input_port ;
+        ] ;
+.
+
+<http://example.org/components/switch-signal>
+    a oeo:OEO_00420006 ;
+    oeo:OEO_0042XXXX-has_connection_port
+        [
+            a oeo:OEO_0042XXXX-simulation_connection_input_port ;
+            oeo:OEO_0042XXXX-has_message_schema
+                [
+                    a oeo:OEO_0042XXXX-message_schema ;
+                    oeo:OEO_0042XXXX-has_message_attribute (
+                        
+                        [
+                            a oeo:OEO_0042XXXX-message_attribute ;
+                            vil:field_type "float"^^<xsd:string> ;
+                            ns1:label "float_0"^^<xsd:string> ;
+                        ]
+                    ) ;
+                ] ;
+        ] ;
+.
+
+[]    oeo:OEO_0042XXXX-has_simulation_connection 
+        [
+
+        ] ,
+        [
+
+        ] ;
+    oeo:OEO_0042XXXX-simulators
+        <http://example.org/components/building-fmu> ,
+        <http://example.org/components/fixed-p> ,
+        <http://example.org/components/fixed-q> ,
+        <http://example.org/components/hardware-receiver> ,
+        <http://example.org/components/hardware-sender> ,
+        <http://example.org/components/hardware-setpoints> ,
+        <http://example.org/components/pv-database> ,
+        <http://example.org/components/rtds-1> ,
+        <http://example.org/components/switch-signal> ;
+.

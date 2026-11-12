@@ -1,0 +1,27 @@
+[project]
+name = "villas-semantic-configuration"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Philipp Schmurr", email = "philipp.schmurr@kit.edu" }
+]
+requires-python = ">=3.14"
+dependencies = [
+    "openapi-core>=0.23.1,<0.24.0",
+    "rdflib>=7.6.0,<7.7.0",
+    "python-jsonpath>=2.2.2,<2.3.0"
+]
+
+[project.scripts]
+villas-semantic-configuration = "villas_semantic_configuration:main"
+
+[build-system]
+requires = ["uv_build>=0.13.6,<0.14.0"]
+build-backend = "uv_build"
+
+[tool.setuptools.package-data]
+vsc = ["openapi.yaml", "context.json"]
+
+[tool.uv.build-backend]
+module-name = "vsc"

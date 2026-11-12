@@ -1,0 +1,47 @@
+{
+  "@context": {
+    "oeo": "http://openenergyplatform.org/ontology/oeo/",
+    "vil": "http://villas.fein-aachen.org/ontology/",
+    "nodes": {
+      "@id": "oeo:OEO_0042XXXX-simulators",
+      "@container": "@id",
+      "@context": {
+        "@base": "http://example.org/components/",
+        "in": {
+          "@id": "oeo:OEO_0042XXXX-has_connection_port",
+          "id": {
+            "@type": "@id"
+          },
+          "@context": {
+            "schema": {
+              "@id": "oeo:OEO_0042XXXX-has_message_schema",
+              "@context": {
+                "signals": {
+                  "@container": "@list",
+                  "@id": "oeo:OEO_0042XXXX-has_message_attribute",
+                  "@context": {
+                    "type": {
+                      "@id": "vil:field_type",
+                      "@type": "xsd:string"
+                    },
+                    "name": {
+                      "@id": "rdfs:label",
+                      "@type": "xsd:string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "out": {
+
+        }
+      }
+    },
+    "paths": {
+      "@container": "@set",
+      "@id": "oeo:OEO_0042XXXX-has_simulation_connection"
+    }
+  }
+}
